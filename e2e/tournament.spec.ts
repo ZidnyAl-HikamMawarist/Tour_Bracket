@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('APEX BRACKET Automated E2E Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      sessionStorage.setItem('apex_admin_auth', 'true');
+    });
+  });
+
   test('Match Controller loads and displays bracket rounds', async ({ page }) => {
     await page.goto('/admin/match');
     await expect(page.locator('h1')).toContainText('Match Controller');

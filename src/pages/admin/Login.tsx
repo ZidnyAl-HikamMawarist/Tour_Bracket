@@ -1,18 +1,36 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTournament } from '../../context/TournamentContext';
+import { signInUser } from '../../lib/supabase';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { loginAdmin } = useTournament();
   const navigate = useNavigate();
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    loginAdmin(password);
-    navigate('/admin/match');
+    setErrorMsg(null);
+    setIsLoading(true);
+
+    try {
+      const { error } = await signInUser({ email, password });
+      if (error) {
+        setErrorMsg(error.message);
+      } else {
+        loginAdmin(password);
+        navigate('/admin/match');
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Terjadi kesalahan saat sign in.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -23,15 +41,32 @@ export default function Login() {
         </div>
 
         <h1>Admin Workspace</h1>
-        <div className="login-sub">Authentication Required</div>
+        <div className="login-sub">Organizer Authentication</div>
+
+        {errorMsg && (
+          <div
+            style={{
+              background: 'rgba(255, 180, 171, 0.15)',
+              border: '1px solid rgba(255, 180, 171, 0.3)',
+              color: 'var(--danger)',
+              padding: '10px 14px',
+              borderRadius: 6,
+              fontSize: 13,
+              marginTop: 16,
+              textAlign: 'left',
+            }}
+          >
+            ⚠️ {errorMsg}
+          </div>
+        )}
 
         <form onSubmit={handleSignIn} className="login-form">
           <div className="field">
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Username"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Alamat Email Organizer"
               required
             />
             <svg className="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -57,15 +92,19 @@ export default function Login() {
               />
               Remember me
             </label>
-            <a href="#">Forgot Password?</a>
+            <Link to="/admin/register" style={{ color: 'var(--accent)', fontWeight: 600 }}>
+              Daftar Akun Baru
+            </Link>
           </div>
 
-          <button type="submit" className="signin">Sign In&nbsp; →</button>
+          <button type="submit" className="signin" disabled={isLoading}>
+            {isLoading ? 'Authenticating...' : 'Sign In →'}
+          </button>
         </form>
 
         <div className="env">
           <span className="env-dot" />
-          Production Env
+          Production Organizer Cloud
         </div>
       </div>
     </div>
