@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX BRACKET — Figma Pages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1326;--panel:#131b2e;--panel2:#171f33;--panel3:#2d3449;
+  --text:#dae2fd;--muted:#c1c7ce;--accent:#e1f0ff;--accent-dark:#00344d;
+  --line:rgba(255,255,255,.08);--gold:#d3c5ad;--danger:#ffb4ab;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+body{overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
+img{max-width:100%;display:block}
+.page{display:none;min-height:100vh}
+.page:target{display:block}
+#match{display:block}
+body:has(#login:target) #match,
+body:has(#settings:target) #match,
+body:has(#participants:target) #match,
+body:has(#viewer:target) #match{display:none}
+body:has(#login:target) #login,
+body:has(#settings:target) #settings,
+body:has(#participants:target) #participants,
+body:has(#viewer:target) #viewer{display:block}
+
+/* Shared admin chrome */
+.admin-shell{min-height:100vh;padding-left:288px;background:var(--bg)}
+.sidebar{position:fixed;z-index:20;left:0;top:0;bottom:0;width:288px;background:#131b2e;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;padding:24px}
+.brand img{width:32px;height:32px;object-fit:contain}
+.brand span{font:600 20px/28px Montserrat;letter-spacing:-.5px;color:var(--accent)}
+.nav{padding:0 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:4px;font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.nav a.active,.nav a:hover{background:rgba(165,216,255,.2);color:var(--accent);border-left:4px solid var(--accent);padding-left:12px}
+.nav-icon{width:20px;height:20px;object-fit:contain;opacity:.9}
+.userbox{border-top:1px solid var(--line);padding:24px;display:flex;gap:16px;align-items:center}
+.user-avatar{width:32px;height:32px;border-radius:12px;background:var(--accent);display:grid;place-items:center}
+.user-avatar img{width:12px;height:12px}
+.user-name{font-size:14px;color:var(--text)}.user-role{font-size:10px;color:var(--muted);text-transform:uppercase}
+.topbar{position:fixed;z-index:15;left:288px;right:0;top:0;height:64px;background:rgba(11,19,38,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+.search{display:flex;gap:16px;align-items:center;color:var(--muted);font-size:12px}
+.search img{width:18px;height:18px}
+.server{display:flex;gap:24px;align-items:center;font-size:12px;font-weight:700;letter-spacing:1.2px;color:var(--accent)}
+.online-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(165,216,255,.7)}
+.main{padding-top:64px;min-height:100vh}
+.content{padding:32px}
+
+/* Match controller */
+.match-content{min-height:100vh;background:radial-gradient(circle at 10% 0,rgba(225,240,255,.05),transparent 32%),radial-gradient(circle at 100% 100%,rgba(225,240,255,.05),transparent 30%),var(--bg)}
+.match-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:32px}
+.title-wrap{display:flex;align-items:center;gap:16px}.title-logo{width:64px;height:64px;padding:8px;background:var(--panel2);border-radius:8px}.title-logo img{width:100%;height:100%;object-fit:contain}
+h1,h2,h3,p{margin:0}.page-title{font:700 32px/40px Montserrat;letter-spacing:-.8px}.eyebrow{margin-top:4px;font-size:14px;letter-spacing:1.4px;text-transform:uppercase}
+.actions{display:flex;gap:16px}.btn{border:0;border-radius:6px;padding:10px 16px;background:var(--panel2);color:var(--text);font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase}.btn.primary{background:var(--accent);color:var(--accent-dark);box-shadow:0 0 15px rgba(165,216,255,.3)}
+.bracket{display:flex;gap:48px;align-items:center;overflow:auto;padding:32px 200px 64px 0;min-width:max-content}
+.col{width:300px;height:800px;position:relative;flex:none}.semi{display:flex;flex-direction:column;gap:276px;padding-top:138px}.grand{width:340px;display:flex;align-items:center;justify-content:center}
+.match{position:absolute;left:0;right:0;display:flex;flex-direction:column;gap:8px}.m1{top:0}.m2{top:225px}.m3{top:450px}.m4{top:676px}
+.team{min-height:60px;padding:13px;border:1px solid var(--line);border-radius:4px;background:rgba(23,31,51,.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between}
+.team + .team{margin-top:0}.team.dim{opacity:.45}.team.tbd{border-style:dashed;background:rgba(23,31,51,.4);color:var(--muted)}
+.team-left{display:flex;align-items:center;gap:12px}.badge{width:32px;height:32px;border-radius:12px;background:var(--panel3);display:grid;place-items:center;font-size:10px}.team-name{font-weight:600;font-size:16px;letter-spacing:.4px}.score{font:400 16px/24px Montserrat}
+.winner{border-left:4px solid var(--accent);box-shadow:0 0 10px rgba(165,216,255,.35)}.live-badge{position:absolute;left:50%;top:-12px;transform:translateX(-50%);padding:3px 9px;border:1px solid rgba(225,240,255,.2);border-radius:12px;background:#222a3d;color:var(--accent);font-size:10px;letter-spacing:1px}
+.live-badge:before{content:"";display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin-right:4px;box-shadow:0 0 5px #a5d8ff}
+.grand-title{text-align:center;color:#f0e0c8;font:700 12px/16px Montserrat;letter-spacing:2.4px;margin-bottom:16px}
+.final-card{border:1px dashed var(--line);border-radius:4px;padding:17px;height:80px;display:flex;align-items:center}.final-card+.final-card{margin-top:16px}.podium{margin:18px auto;width:120px;height:120px;border:1px dashed #2d3449;border-radius:12px;display:grid;place-items:center;color:#c1c7ce}
+
+/* Login */
+.login-page{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 75% 50%,rgba(165,216,255,.12),transparent 40%),linear-gradient(141deg,#131b2e,#0b1326 50%,#2d3449)}
+.login-card{width:448px;min-height:526px;padding:40px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(45,52,73,.4);backdrop-filter:blur(32px);box-shadow:0 25px 50px -12px rgba(0,0,0,.25);text-align:center}
+.login-logo{width:96px;height:96px;margin:0 auto 32px;padding:8px;background:#060e20;border-radius:12px;box-shadow:0 0 30px rgba(40,95,128,.3)}.login-logo img{width:100%;height:100%;object-fit:contain}
+.login-card h1{font:700 32px/40px Montserrat}.login-sub{margin-top:4px;color:var(--muted);font-size:14px;letter-spacing:2.8px;text-transform:uppercase}
+.login-form{margin-top:32px;display:flex;flex-direction:column;gap:20px;text-align:left}.field{position:relative}.field input{width:100%;padding:15px 17px 15px 49px;background:rgba(6,14,32,.6);border:1px solid rgba(255,255,255,.05);border-radius:8px;color:var(--text);outline:0}.field input::placeholder{color:rgba(193,199,206,.5)}.field img{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:14px;height:18px}
+.form-actions{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px}.remember{display:flex;gap:12px;align-items:center}.remember input{appearance:none;width:20px;height:20px;background:rgba(6,14,32,.8);border:1px solid rgba(255,255,255,.1);border-radius:2px}.remember input:checked{background:var(--accent)}
+.signin{width:100%;padding:16px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-dark);font:500 14px Montserrat;box-shadow:0 4px 20px rgba(165,216,255,.2)}.env{margin:40px auto 0;width:max-content;padding:7px 17px;border:1px solid var(--line);border-radius:12px;background:rgba(6,14,32,.6);font:500 11px Montserrat;color:var(--muted)}.env:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px;box-shadow:0 0 10px #a5d8ff}
+
+/* Settings */
+.settings-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:32px}.section{background:rgba(45,52,73,.2);backdrop-filter:blur(12px);border-radius:8px;padding:32px;position:relative;overflow:hidden;margin-bottom:32px}.section h2{font:600 24px/32px Montserrat;margin-bottom:24px}.section h2:before{content:"";display:inline-block;width:20px;height:20px;margin-right:12px;vertical-align:-2px;background:rgba(225,240,255,.2);border-radius:4px}
+.label{font:700 12px/16px Montserrat;letter-spacing:1.2px;color:var(--muted);display:block;margin-bottom:8px}.input-static,.select-static{padding:12px 16px;background:rgba(6,14,32,.5);border-radius:4px;color:var(--text);font-size:16px}.setting-group{margin-bottom:24px}.branding{display:flex;gap:24px;align-items:center}.branding-preview{width:128px;height:128px;border-radius:4px;overflow:hidden;background:var(--panel3)}.branding-preview img{width:100%;height:100%;object-fit:cover}.replace{padding:8px 16px;background:var(--panel2);color:var(--text);border:0;border-radius:4px;font-size:12px;font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px}.toggle-row{display:flex;justify-content:space-between;align-items:center;background:rgba(6,14,32,.3);padding:16px;margin-bottom:16px}.toggle-row strong{font-size:16px}.toggle-row small{display:block;color:var(--muted);font-size:14px;line-height:20px;max-width:700px}.toggle{width:44px;height:24px;border-radius:12px;background:var(--panel3);position:relative;flex:none}.toggle.on{background:var(--accent)}.toggle:after{content:"";position:absolute;width:20px;height:20px;top:2px;left:2px;border-radius:50%;background:var(--accent-dark)}.toggle.on:after{left:22px}.save{float:right;padding:16px 32px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-dark);font:600 20px Montserrat;box-shadow:0 0 10px rgba(165,216,255,.2)}
+.status{background:rgba(45,52,73,.1);padding:24px;border-radius:8px}.status-title{font:700 12px Montserrat;letter-spacing:1.2px}.status-line{display:flex;justify-content:space-between;margin-top:18px;font-size:14px}.danger{margin-top:520px;background:rgba(147,0,10,.1);border:1px solid rgba(255,180,171,.1);padding:25px;border-radius:8px}.danger h3{color:var(--danger);font:600 20px Montserrat}.danger p{color:var(--muted);font-size:14px;line-height:20px;margin:16px 0}.danger button{width:100%;padding:14px;background:rgba(255,180,171,.1);border:1px solid rgba(255,180,171,.2);color:var(--danger);border-radius:4px}
+
+/* Participants */
+.roster-head{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:24px}.roster-title{display:flex;gap:12px;align-items:center}.roster-title:before{content:"";width:6px;height:32px;border-radius:12px;background:var(--accent);box-shadow:0 0 10px rgba(225,240,255,.5)}.roster-title h1{font:700 48px/56px Montserrat;letter-spacing:-1.2px}.roster-head p{margin-left:18px;margin-top:8px;color:var(--muted);line-height:24px}.generate{padding:16px 32px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-dark);font:600 20px Montserrat}.participants-grid{display:grid;grid-template-columns:4fr 8fr;gap:32px}.card{background:rgba(45,52,73,.4);backdrop-filter:blur(12px);border-radius:16px;padding:24px;margin-bottom:24px}.card h2{font:600 24px/32px Montserrat;margin-bottom:24px}.upload{height:128px;border:1px dashed rgba(65,72,77,.5);background:#131b2e;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:14px}.register{width:100%;padding:12px;border:0;border-radius:4px;background:var(--panel3);color:var(--text);font-weight:600;letter-spacing:.6px}.stats{display:flex;justify-content:space-between;align-items:center;padding:20px;background:rgba(45,52,73,.2);border-radius:8px}.stats strong{font:700 32px Montserrat;color:var(--accent)}
+.filters{background:#131b2e;padding:8px;border-radius:8px;display:flex;justify-content:space-between}.tabs{display:flex;gap:4px}.tab{padding:8px 16px;border:0;border-radius:4px;background:transparent;color:var(--muted);font-size:12px}.tab.active{background:var(--panel3);color:var(--text)}.roster-search{background:#0b1326;border:0;border-radius:4px;padding:10px 16px;color:var(--muted);width:256px}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.team-card{padding:16px;border-radius:8px;background:rgba(45,52,73,.3);display:flex;gap:16px;align-items:center;min-height:100px}.team-logo{width:48px;height:48px;border-radius:4px;background:var(--panel3);overflow:hidden;flex:none}.team-card h3{font:600 20px Montserrat}.meta{font-size:12px;color:var(--muted);margin-top:6px}.tag{margin-left:auto;align-self:flex-start;padding:3px 9px;border:1px solid rgba(225,240,255,.2);border-radius:12px;background:#060e20;color:var(--accent);font-size:10px;white-space:nowrap}
+
+/* Live viewer */
+.viewer{min-height:100vh;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(45,52,73,.14),transparent 35%),radial-gradient(circle at 15% 25%,rgba(165,216,255,.06),transparent 30%),#0b1326}
+.viewer-header{position:absolute;z-index:3;left:48px;right:48px;top:24px;height:88px}.broadcast{position:absolute;left:0;top:20px;color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase}.broadcast b{display:block;color:var(--text);font:400 16px Montserrat;letter-spacing:-.4px;margin-top:2px}.live-pill{position:absolute;left:136px;top:28px;padding:4px 12px;border-radius:12px;background:rgba(45,52,73,.5);font-size:10px}.series{position:absolute;left:165px;top:0;padding-left:48px}.series small{font:400 12px Montserrat;color:rgba(225,240,255,.6);letter-spacing:3.6px}.series h1{font:400 32px/48px Montserrat;letter-spacing:12.8px}.series hr{border:0;border-top:1px solid rgba(225,240,255,.4);width:128px;margin:0}
+.viewer-bracket{position:absolute;left:48px;right:48px;top:180px;bottom:80px;display:flex;align-items:center;justify-content:center;gap:96px}.viewer-col{display:flex;flex-direction:column;justify-content:space-between;height:320px}.viewer-match{width:256px;background:rgba(34,42,61,.6);backdrop-filter:blur(10px);border-radius:4px;overflow:visible;box-shadow:0 8px 32px rgba(0,0,0,.4);position:relative}.viewer-match .row{display:flex;justify-content:space-between;padding:12px 16px;background:rgba(23,31,51,.4);font-size:16px}.viewer-match .row+ .row{opacity:.4}.viewer-match.active:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);box-shadow:0 0 12px rgba(225,240,255,.6)}.viewer-semis{gap:96px}.semi-match{width:288px}.grand-view{width:420px;position:relative}.grand-label{text-align:center;color:var(--gold);letter-spacing:4.8px;font:400 16px Montserrat;margin-bottom:40px}.champion{height:239px;border:1px solid rgba(211,197,173,.3);border-radius:8px;background:rgba(34,42,61,.8);overflow:hidden;position:relative}.champion .winner-row{height:149px;padding:32px;display:flex;justify-content:space-between;align-items:center;background:rgba(23,31,51,.6)}.champion .loser-row{height:90px;padding:24px 32px;display:flex;justify-content:space-between;align-items:center;background:rgba(23,31,51,.3);color:var(--muted)}.champion .winner-row:before{content:"";position:absolute;left:0;top:0;width:8px;height:100%;background:linear-gradient(#d3c5ad,#f0e0c8,#d3c5ad);box-shadow:0 0 20px rgba(211,197,173,.8)}.champion-score{font:400 56px Montserrat;color:var(--gold)}.champion-name{font:400 16px Montserrat;color:var(--gold)}.viewer-footer{position:absolute;left:0;right:0;bottom:0;height:40px;background:rgba(34,42,61,.6);border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;overflow:hidden}.ticker{white-space:nowrap;font:600 12px Montserrat;letter-spacing:2.4px;color:var(--accent);animation:scroll 24s linear infinite}@keyframes scroll{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+.powered{position:absolute;right:48px;bottom:64px;display:flex;gap:12px;align-items:center;color:var(--muted);font-size:16px}.powered img{width:40px;height:40px;padding:2px;background:#0b1326;border:1px solid var(--line);border-radius:4px}
+
+/* Responsive */
+@media(max-width:1000px){
+ .admin-shell{padding-left:0}.sidebar{width:220px}.topbar{left:220px}.content{padding:24px}.settings-layout,.participants-grid{grid-template-columns:1fr}.danger{margin-top:24px}.roster-title h1{font-size:36px}.bracket{padding-right:40px}.team-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ .sidebar{position:static;width:100%;height:auto}.admin-shell{padding:0}.topbar{position:static;left:0}.main{padding-top:0}.nav{padding-bottom:16px}.userbox{display:none}.match-head,.roster-head{flex-direction:column;align-items:flex-start;gap:20px}.login-card{width:100%}.two{grid-template-columns:1fr}.viewer-bracket{justify-content:flex-start;left:20px;gap:50px}.viewer-header{left:20px}.series{display:none}.powered{right:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NODE 1:955 — LOGIN -->
+<section id="login" class="page">
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-logo"><img src="https://www.figma.com/api/mcp/asset/eff36189-a233-4a72-9db8-85b770e69738.png" alt="Apex Bracket"></div>
+      <h1>Admin Workspace</h1>
+      <div class="login-sub">Authentication Required</div>
+      <form class="login-form">
+        <div class="field"><input placeholder="Username"><img src="https://www.figma.com/api/mcp/asset/c562263c-489b-47d4-b70a-7c083b156750.svg" alt=""></div>
+        <div class="field"><input type="password" placeholder="Password"><img src="https://www.figma.com/api/mcp/asset/154ded44-5b1f-48ab-90a2-c9d9c2420002.svg" alt=""></div>
+        <div class="form-actions"><label class="remember"><input type="checkbox"> Remember me</label><a href="#">Forgot Password?</a></div>
+        <button class="signin" type="button">Sign In&nbsp; →</button>
+      </form>
+      <div class="env">Production Env</div>
+    </div>
+  </div>
+</section>
+
+<!-- Shared admin pages -->
+<section id="match" class="page">
+<div class="admin-shell">
+<aside class="sidebar">
+  <div><div class="brand"><img src="https://www.figma.com/api/mcp/asset/532691a0-b095-4f69-ad59-73d4d39b292a.png"><span>APEX BRACKET</span></div>
+  <nav class="nav">
+    <a class="active" href="#match"><img class="nav-icon" src="https://www.figma.com/api/mcp/asset/933aad6a-6218-4ab5-b61e-438b2cb50b9a.svg">Match Controller</a>
+    <a href="#settings"><img class="nav-icon" src="https://www.figma.com/api/mcp/asset/8fe80d26-56d5-4aef-8fc4-f0b4ad8f363e.svg">Tournament Settings</a>
+    <a href="#participants"><img class="nav-icon" src="https://www.figma.com/api/mcp/asset/0d55d4e9-e4a7-4dcc-a4cc-1403c3618a0a.svg">Participants</a>
+  </nav></div>
+  <div class="userbox"><div class="user-avatar"><img src="https://www.figma.com/api/mcp/asset/ff297854-c429-4216-b3ca-fc8e8f3cd125.svg"></div><div><div class="user-name">Tournament Admin</div><div class="user-role">System Operator</div></div></div>
+</aside>
+<header class="topbar"><div class="search">⌕ <span>Quick Search...</span></div><div class="server"><span><i class="online-dot" style="display:inline-block"></i> Server: Online</span> ♧ &nbsp;?</div></header>
+<main class="main match-content"><div class="content">
+  <div class="match-head"><div class="title-wrap"><div class="title-logo"><img src="https://www.figma.com/api/mcp/asset/532691a0-b095-4f69-ad59-73d4d39b292a.png"></div><div><h1 class="page-title">Match Controller</h1><p class="eyebrow">Quarter-Finals Live</p></div></div><div class="actions"><button class="btn">↻ Reload Data</button><button class="btn primary">Publish Results</button></div></div>
+  <div class="bracket">
+    <div class="col">
+      <div class="match m1"><div class="team winner"><div class="team-left"><span class="badge">C9</span><span class="team-name">Cloud9</span></div><span class="score">2</span></div><div class="team dim"><div class="team-left"><span class="badge">TL</span><span class="team-name">Team Liquid</span></div><span class="score">0</span></div></div>
+      <div class="match m2"><span class="live-badge">LIVE</span><div class="team"><div class="team-left"><span class="badge">FNC</span><span class="team-name">Fnatic</span></div><span class="score">1</span></div><div class="team"><div class="team-left"><span class="badge">T1</span><span class="team-name">T1 Esports</span></div><span class="score">1</span></div></div>
+      <div class="match m3"><div class="team dim"><div class="team-left"><span class="badge">G2</span><span class="team-name">G2 Esports</span></div><span class="score">-</span></div><div class="team dim"><div class="team-left"><span class="badge">NRG</span><span class="team-name">NRG</span></div><span class="score">-</span></div></div>
+      <div class="match m4"><div class="team dim"><div class="team-left"><span class="badge">SEN</span><span class="team-name">Sentinels</span></div><span class="score">-</span></div><div class="team dim"><div class="team-left"><span class="badge">NAVI</span><span class="team-name">Natus Vincere</span></div><span class="score">-</span></div></div>
+    </div>
+    <div class="col semi">
+      <div class="match" style="position:relative"><div class="team"><div class="team-left"><span class="badge">C9</span><span class="team-name">Cloud9</span></div><span class="score">-</span></div><div class="team tbd"><div class="team-left"><span class="badge">?</span><span class="team-name">TBD</span></div></div></div>
+      <div class="match" style="position:relative"><div class="team tbd"><div class="team-left"><span class="badge">?</span><span class="team-name">TBD</span></div></div><div class="team tbd"><div class="team-left"><span class="badge">?</span><span class="team-name">TBD</span></div></div></div>
+    </div>
+    <div class="col grand"><div style="width:100%"><div class="grand-title">GRAND FINAL</div><div class="final-card"><div class="team-left"><span class="badge">?</span><span class="team-name">Awaiting Finalist</span></div></div><div class="podium">♕</div><div class="final-card"><div class="team-left"><span class="badge">?</span><span class="team-name">Awaiting Finalist</span></div></div></div></div>
+  </div>
+</div></main></div>
+</section>
+
+<!-- NODE 1:524 — SETTINGS -->
+<section id="settings" class="page">
+<div class="admin-shell">
+<aside class="sidebar"><div><div class="brand"><img src="https://www.figma.com/api/mcp/asset/f32b537d-7c66-4468-9afb-5148b0eb2335.png"><span>APEX BRACKET</span></div><nav class="nav"><a href="#match">⌁ Match Controller</a><a class="active" href="#settings">⚙ Tournament Settings</a><a href="#participants">♟ Participants</a></nav></div><div class="userbox"><div class="user-avatar">♙</div><div><div class="user-name">Tournament Admin</div><div class="user-role">System Operator</div></div></div></aside>
+<header class="topbar"><div class="search">⌕ <span>Quick Search...</span></div><div class="server"><span><i class="online-dot" style="display:inline-block"></i> Server: Online</span> ♧ &nbsp;?</div></header>
+<main class="main"><div class="content"><h1 class="page-title">Tournament Settings</h1><p style="color:var(--muted);font-size:18px;line-height:28px;margin:8px 0 32px;max-width:672px">Configure global parameters for the current event. Changes made here may impact live brackets if matches have already commenced.</p>
+<div class="settings-layout"><div>
+<div class="section"><h2>Core Details</h2><div class="setting-group"><label class="label">Tournament Name</label><div class="input-static">Apex Legends Global Series: Split 1 Playoffs</div></div><div class="setting-group"><label class="label">Event Branding</label><div class="branding"><div class="branding-preview"><img src="https://www.figma.com/api/mcp/asset/d662cb72-597d-4fe5-b41b-93cef5b69b61.png"></div><div><p style="color:var(--muted);font-size:14px;line-height:20px;margin-bottom:12px">Upload the official primary crest or wordmark. Supported formats: PNG, SVG (Max 5MB).</p><button class="replace">▧ Replace Image</button></div></div></div></div>
+<div class="section"><h2>Bracket Structure</h2><div class="two"><div><label class="label">Participant Capacity</label><div class="select-static">16 Teams (Round of 16)　⌄</div></div><div><label class="label">Format</label><div class="select-static">Single Elimination　⌄</div></div></div></div>
+<div class="section"><h2>Match Protocol</h2><div class="toggle-row"><div><strong>Enable Match Point Format</strong><small>Teams must reach a point threshold before becoming match-point eligible.</small></div><span class="toggle on"></span></div><div class="toggle-row"><div><strong>Third-Place Decider</strong><small>Generate a secondary match for semi-final losers.</small></div><span class="toggle"></span></div><div class="toggle-row"><div><strong>Auto-Advance Byes</strong><small>Automatically progress higher-seeded teams in unbalanced brackets.</small></div><span class="toggle on"></span></div></div>
+<div style="padding:16px 0 48px;overflow:auto"><button class="save">▣ &nbsp; Save Configuration</button></div>
+</div><aside><div class="status"><div class="status-title">SYSTEM STATUS</div><div class="status-line"><span>Data Store</span><span>● Connected</span></div><div style="height:4px;background:var(--panel3);margin:12px 0;border-radius:12px"><div style="width:12%;height:100%;background:var(--accent)"></div></div><div class="status-line"><span>API Sync Rate</span><span style="font-family:monospace">15ms ping</span></div></div><div class="danger"><h3>⚠ Danger Zone</h3><p>Resetting the system will purge all current bracket data, participant lists, and match histories. This action cannot be undone.</p><button>▣ &nbsp; RESET SYSTEM</button></div></aside></div>
+</div></main></div>
+</section>
+
+<!-- NODE 1:714 — PARTICIPANTS -->
+<section id="participants" class="page">
+<div class="admin-shell">
+<aside class="sidebar"><div><div class="brand"><img src="https://www.figma.com/api/mcp/asset/b154327f-c097-4546-9e91-caaebf5038e0.png"><span>APEX BRACKET</span></div><nav class="nav"><a href="#match">⌁ Match Controller</a><a href="#settings">⚙ Tournament Settings</a><a class="active" href="#participants">♟ Participants</a></nav></div><div class="userbox"><div class="user-avatar">♙</div><div><div class="user-name">Tournament Admin</div><div class="user-role">System Operator</div></div></div></aside>
+<header class="topbar"><div class="search">⌕ <span>Quick Search...</span></div><div class="server"><span><i class="online-dot" style="display:inline-block"></i> Server: Online</span> ♧ &nbsp;?</div></header>
+<main class="main"><div class="content"><div class="roster-head"><div><div class="roster-title"><h1>ROSTER COMMAND</h1></div><p>Manage registered teams, verify participant details, and finalize the<br>tournament lineup before generating the competition bracket.</p></div><button class="generate">↗ &nbsp; Shuffle &amp; Generate Bracket</button></div>
+<div class="participants-grid"><div><div class="card"><h2>♙ Add Participant</h2><label class="label">Team Name</label><input class="roster-search" style="width:100%;margin-bottom:20px" placeholder="e.g. Quantum Sentinels"><label class="label">Team Logo (Optional)</label><div class="upload">☁<br>Drag &amp; drop or click to upload</div><label class="label" style="margin-top:24px">Seed Override</label><input class="roster-search" style="width:100%" placeholder="#  Auto"><button class="register" style="margin-top:28px">＋ REGISTER TEAM</button></div><div class="stats"><div><span class="label">Total Teams</span><strong>16</strong></div><div style="width:48px;height:48px;background:var(--panel2);border-radius:12px;display:grid;place-items:center">▥</div></div></div>
+<div><div class="filters"><div class="tabs"><button class="tab active">All (16)</button><button class="tab">Waitlist (2)</button></div><input class="roster-search" placeholder="⌕  Search roster..."></div><div class="team-grid">
+<div class="team-card"><div class="team-logo"><img src="https://www.figma.com/api/mcp/asset/ccad87f8-7014-4ba8-9ae6-9083f01d5819.png"></div><div><h3>Alpha Strike</h3><div class="meta">Seed 1　·　Registered: 2h ago</div></div><span class="tag">● DRAFT READY</span></div>
+<div class="team-card"><div class="team-logo"><img src="https://www.figma.com/api/mcp/asset/63711f08-2cc3-47a8-8116-7e64523cfe3a.png"></div><div><h3>Neon Paradox</h3><div class="meta">Seed 2　·　Registered: 4h ago</div></div><span class="tag">● DRAFT READY</span></div>
+<div class="team-card"><div class="team-logo">▧</div><div><h3>Void Walkers</h3><div class="meta">Unseeded　·　Registered: 1d ago</div></div><span class="tag">● PENDING INFO</span></div>
+</div></div></div>
+</div></main></div>
+</section>
+
+<!-- NODE 2:2 — LIVE VIEWER -->
+<section id="viewer" class="page">
+<div class="viewer">
+<header class="viewer-header"><div class="broadcast">LIVE BROADCAST<b>APEX BRACKET</b></div><div class="live-pill">● LIVE</div><div class="series"><small>TOURNAMENT SERIES</small><h1>APEX LEGENDS GLOBAL SERIES</h1><hr></div></header>
+<div class="viewer-bracket">
+<div class="viewer-col">
+<div class="viewer-match active"><div class="row"><div>Cybernetic Ravens<br><small>● ● ●</small></div><b>3</b></div><div class="row">Void Walkers <b>1</b></div><span class="live-badge" style="right:-8px;left:auto;transform:none;top:-8px">LIVE</span></div>
+<div class="viewer-match"><div class="row">Neon Syndicate <b>2</b></div><div class="row">Solar Flares <b>0</b></div></div>
+<div class="viewer-match active"><div class="row"><b>Abyssal Kings</b><b>3</b></div><div class="row">Quantum Pulse <b>2</b></div></div>
+<div class="viewer-match"><div class="row">Stellar Drifters <b>1</b></div><div class="row">Crimson Dawn <b>0</b></div></div>
+</div>
+<div class="viewer-col viewer-semis">
+<div class="viewer-match semi-match active"><div class="row"><div>🎮 &nbsp; Cybernetic Ravens</div><b>3</b></div><div class="row">Neon Syndicate <b>0</b></div></div>
+<div class="viewer-match semi-match active"><div class="row"><div>🎮 &nbsp; Abyssal Kings</div><b>3</b></div><div class="row">Stellar Drifters <b>1</b></div></div>
+</div>
+<div class="grand-view"><div class="grand-label">♕<br>GRAND FINAL</div><div class="champion"><div class="winner-row"><div><small style="color:rgba(211,197,173,.7)">Champion</small><div class="champion-name">Cybernetic Ravens</div><small style="color:#d3c5ad">● ● ●</small></div><div class="champion-score">4</div></div><div class="loser-row"><span>◯ &nbsp; Abyssal Kings</span><span>2</span></div></div><span class="live-badge" style="right:-12px;left:auto;transform:none;top:-12px">LIVE MATCH</span></div>
+</div>
+<div class="powered">Powered by <img src="https://www.figma.com/api/mcp/asset/663ca09b-b3fb-4740-9184-abf13c2319d2.png"></div>
+<div class="viewer-footer"><div class="ticker">LIVE UPDATES • WELCOME TO THE CHAMPIONSHIP • UPCOMING MATCH: CYBERNETIC RAVENS VS ABYSSAL KINGS • LIVE UPDATES • WELCOME TO THE CHAMPIONSHIP •</div></div>
+</div>
+</section>
+
+</body>
+</html>
