@@ -302,15 +302,123 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={{ borderTop: '1px solid var(--line)', padding: '32px 48px', background: 'var(--panel)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <img src="/favicon.svg" alt="Apex Bracket" style={{ width: 28, height: 28 }} />
-            <span style={{ font: '600 16px Montserrat', color: 'var(--accent)' }}>APEX BRACKET</span>
+      {/* Official SaaS Footer */}
+      <footer style={{ borderTop: '1px solid var(--line)', background: 'var(--panel)', padding: '64px 48px 32px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          {/* Main Footer Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '2fr 1fr 1fr 1fr',
+              gap: 48,
+              marginBottom: 48,
+            }}
+          >
+            {/* Column 1: Brand & Tagline */}
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <img src="/favicon.svg" alt="Apex Bracket" style={{ width: 36, height: 36 }} />
+                <span style={{ font: '700 22px Montserrat', color: 'var(--accent)', letterSpacing: '-0.5px' }}>
+                  APEX BRACKET
+                </span>
+              </div>
+              <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: '24px', maxWidth: 360, marginBottom: 24 }}>
+                Platform Sistem Bagan Turnamen E-Sports &amp; MLBB Real-Time #1. Didesain khusus untuk siaran langsung OBS, proyektor, dan komunitas gaming.
+              </p>
+
+              {/* Status Badge */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 14px',
+                  borderRadius: 20,
+                  background: 'rgba(74, 222, 128, 0.1)',
+                  border: '1px solid rgba(74, 222, 128, 0.3)',
+                  color: '#4ade80',
+                  fontSize: 12,
+                  fontWeight: 600,
+                }}
+              >
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    background: '#4ade80',
+                    boxShadow: '0 0 8px #4ade80',
+                  }}
+                />
+                All Systems Operational (99.9% Uptime)
+              </div>
+            </div>
+
+            {/* Column 2: Produk & Fitur */}
+            <div>
+              <h4 style={{ font: '700 14px Montserrat', textTransform: 'uppercase', letterSpacing: 1.5, color: 'var(--text)', marginBottom: 20 }}>
+                Produk &amp; Fitur
+              </h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14 }}>
+                <li><a href="#features" style={{ color: 'var(--muted)' }}>Match Controller</a></li>
+                <li><a href="#features" style={{ color: 'var(--muted)' }}>Live Viewer Screen</a></li>
+                <li><a href="#features" style={{ color: 'var(--muted)' }}>Multi-Game Theme Switcher</a></li>
+                <li><a href="#features" style={{ color: 'var(--muted)' }}>Best of N Series Dots</a></li>
+                <li><a href="#features" style={{ color: 'var(--muted)' }}>Supabase Real-Time Cloud</a></li>
+              </ul>
+            </div>
+
+            {/* Column 3: Solusi Game */}
+            <div>
+              <h4 style={{ font: '700 14px Montserrat', textTransform: 'uppercase', letterSpacing: 1.5, color: 'var(--text)', marginBottom: 20 }}>
+                Game Solutions
+              </h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14 }}>
+                <li><span style={{ color: 'var(--muted)' }}>Mobile Legends (MLBB)</span></li>
+                <li><span style={{ color: 'var(--muted)' }}>Valorant Tournament</span></li>
+                <li><span style={{ color: 'var(--muted)' }}>Apex Legends Series</span></li>
+                <li><span style={{ color: 'var(--muted)' }}>PUBG Mobile Cup</span></li>
+                <li><span style={{ color: 'var(--muted)' }}>Custom Tournament</span></li>
+              </ul>
+            </div>
+
+            {/* Column 4: Perusahaan & Bantuan */}
+            <div>
+              <h4 style={{ font: '700 14px Montserrat', textTransform: 'uppercase', letterSpacing: 1.5, color: 'var(--text)', marginBottom: 20 }}>
+                Penyelenggara
+              </h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14 }}>
+                <li><Link to="/admin/register" style={{ color: 'var(--muted)' }}>Daftar Akun Organizer</Link></li>
+                <li><Link to="/admin/login" style={{ color: 'var(--muted)' }}>Sign In Admin</Link></li>
+                <li><a href="#how-it-works" style={{ color: 'var(--muted)' }}>Panduan Penggunaan</a></li>
+                <li><span style={{ color: 'var(--muted)' }}>Dokumentasi API</span></li>
+                <li><span style={{ color: 'var(--muted)' }}>Kebijakan Privasi</span></li>
+              </ul>
+            </div>
           </div>
-          <div style={{ color: 'var(--muted)', fontSize: 13 }}>
-            &copy; 2026 Apex Bracket SaaS. Built for E-Sports Tournament Organizers.
+
+          {/* Bottom Bar Divider */}
+          <div
+            style={{
+              paddingTop: 32,
+              borderTop: '1px solid var(--line)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 16,
+              fontSize: 13,
+              color: 'var(--muted)',
+            }}
+          >
+            <div>
+              &copy; {new Date().getFullYear()} <b>Apex Bracket SaaS Inc.</b> Hak Cipta Dilindungi Undang-Undang.
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+              <span>🌐 Indonesia (ID)</span>
+              <span>⚡ Powered by React 19 &amp; Supabase Realtime</span>
+            </div>
           </div>
         </div>
       </footer>
