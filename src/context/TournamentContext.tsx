@@ -16,6 +16,8 @@ const DEFAULT_SETTINGS: TournamentSettings = {
   thirdPlaceDecider: false,
   autoAdvanceByes: true,
   tickerText: 'LIVE UPDATES • WELCOME TO THE CHAMPIONSHIP • UPCOMING MATCH: CYBERNETIC RAVENS VS ABYSSAL KINGS • LIVE UPDATES • WELCOME TO THE CHAMPIONSHIP •',
+  theme: 'apex_navy',
+  defaultBestOf: 3,
 };
 
 const DEFAULT_TEAMS: Team[] = [
@@ -211,6 +213,12 @@ export function TournamentProvider({ children }: { children: React.ReactNode }) 
   });
 
   const isUsingSupabase = isSupabaseConfigured();
+
+  // Apply data-theme attribute on <html> element
+  useEffect(() => {
+    const theme = state.settings.theme || 'apex_navy';
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [state.settings?.theme]);
 
   // Supabase Real-time Subscription & initial fetch
   useEffect(() => {

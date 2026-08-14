@@ -11,6 +11,8 @@ export interface Team {
 }
 
 export type MatchStatus = 'pending' | 'live' | 'finished';
+export type BestOfMode = 1 | 3 | 5 | 7;
+export type ThemeMode = 'apex_navy' | 'valorant_red' | 'mlbb_gold' | 'pubg_emerald';
 
 export interface Match {
   id: string;
@@ -25,6 +27,7 @@ export interface Match {
   status: MatchStatus;
   nextMatchId: string | null;
   nextSlot?: 1 | 2; // Which slot (team1 or team2) the winner advances to
+  bestOf?: BestOfMode;
 }
 
 export interface TournamentSettings {
@@ -38,6 +41,8 @@ export interface TournamentSettings {
   thirdPlaceDecider: boolean;
   autoAdvanceByes: boolean;
   tickerText: string;
+  theme: ThemeMode;
+  defaultBestOf: BestOfMode;
 }
 
 export interface TournamentState {

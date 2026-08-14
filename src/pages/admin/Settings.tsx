@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useTournament } from '../../context/TournamentContext';
+import type { ThemeMode, BestOfMode } from '../../types/tournament';
 
 export default function Settings() {
   const { state, updateSettings, purgeAllData, isUsingSupabase } = useTournament();
@@ -15,6 +16,8 @@ export default function Settings() {
     thirdPlaceDecider: state.settings.thirdPlaceDecider,
     autoAdvanceByes: state.settings.autoAdvanceByes,
     tickerText: state.settings.tickerText,
+    theme: state.settings.theme || 'apex_navy',
+    defaultBestOf: state.settings.defaultBestOf || 3,
   });
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -40,6 +43,13 @@ export default function Settings() {
     updateSettings(form);
     showToast('Settings saved successfully!');
   };
+
+  const themes: { id: ThemeMode; name: string; game: string; colors: string[] }[] = [
+    { id: 'apex_navy', name: 'Apex Navy', game: 'Apex Legends / Default', colors: ['#0b1326', '#131b2e', '#e1f0ff', '#d3c5ad'] },
+    { id: 'valorant_red', name: 'Valorant Red', game: 'Valorant / Crimson', colors: ['#0f1923', '#1b2733', '#ff4655', '#f3e5ab'] },
+    { id: 'mlbb_gold', name: 'MLBB Gold', game: 'Mobile Legends / Royal', colors: ['#120b24', '#1d1238', '#ffcc00', '#ffd700'] },
+    { id: 'pubg_emerald', name: 'PUBG Emerald', game: 'PUBG / Emerald Green', colors: ['#0c1810', '#14261b', '#2ecc71', '#f39c12'] },
+  ];
 
   return (
     <div className="content">
@@ -72,6 +82,37 @@ export default function Settings() {
       <form onSubmit={handleSubmit}>
         <div className="settings-layout">
           <div>
+            {/* Visual Theme Preset Switcher */}
+            <div className="section">
+              <h2>Visual Theme Preset</h2>
+              <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 16 }}>
+                Select a game-inspired color theme. Applied instantly across Admin &amp; Live Broadcast screens.
+              </p>
+
+              <div className="theme-grid">
+                {themes.map((t) => (
+                  <div
+                    key={t.id}
+                    className={`theme-card ${form.theme === t.id ? 'active' : ''}`}
+                    onClick={() => {
+                      setForm((prev) => ({ ...prev, theme: t.id }));
+                      document.documentElement.setAttribute('data-theme', t.id);
+                    }}
+                  >
+                    <div className="theme-preview-bar">
+                      {t.colors.map((c, idx) => (
+                        <div key={idx} style={{ flex: 1, background: c }} />
+                      ))}
+                    </div>
+                    <div>
+                      <strong style={{ display: 'block', fontSize: 14 }}>{t.name}</strong>
+                      <small style={{ color: 'var(--muted)', fontSize: 11 }}>{t.game}</small>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Core Details */}
             <div className="section">
               <h2>Core Details</h2>
@@ -106,7 +147,7 @@ export default function Settings() {
 
             {/* Bracket Structure */}
             <div className="section">
-              <h2>Bracket Structure</h2>
+              <h2>Bracket Structure &amp; Series Format</h2>
               <div className="two">
                 <div>
                   <label className="label">Participant Capacity</label>
@@ -120,13 +161,16 @@ export default function Settings() {
                   </select>
                 </div>
                 <div>
-                  <label className="label">Format</label>
+                  <label className="label">Match Series Format (Best of N)</label>
                   <select
                     className="select-static"
-                    value={form.format}
-                    onChange={(e) => setForm({ ...form, format: e.target.value as 'single_elimination' })}
+                    value={form.defaultBestOf}
+                    onChange={(e) => setForm({ ...form, defaultBestOf: parseInt(e.target.value, 10) as BestOfMode })}
                   >
-                    <option value="single_elimination">Single Elimination</option>
+                    <option value={1}>Best of 1 (First to 1 Win)</option>
+                    <option value={3}>Best of 3 (First to 2 Wins)</option>
+                    <option value={5}>Best of 5 (First to 3 Wins)</option>
+                    <option value={7}>Best of 7 (First to 4 Wins)</option>
                   </select>
                 </div>
               </div>

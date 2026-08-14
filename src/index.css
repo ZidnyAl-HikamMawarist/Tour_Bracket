@@ -17,6 +17,51 @@
   --danger: #ffb4ab;
 }
 
+/* Valorant Red Theme */
+[data-theme="valorant_red"] {
+  --bg: #0f1923;
+  --panel: #1b2733;
+  --panel2: #243444;
+  --panel3: #384c5e;
+  --text: #ece8e1;
+  --muted: #a0abb6;
+  --accent: #ff4655;
+  --accent-dark: #6e151e;
+  --line: rgba(255, 70, 85, 0.15);
+  --gold: #f3e5ab;
+  --danger: #ff4655;
+}
+
+/* MLBB Gold Theme */
+[data-theme="mlbb_gold"] {
+  --bg: #120b24;
+  --panel: #1d1238;
+  --panel2: #291a4c;
+  --panel3: #3b286b;
+  --text: #f5f0ff;
+  --muted: #bda3e6;
+  --accent: #ffcc00;
+  --accent-dark: #5c4700;
+  --line: rgba(255, 204, 0, 0.15);
+  --gold: #ffd700;
+  --danger: #ff4d4d;
+}
+
+/* PUBG Emerald Theme */
+[data-theme="pubg_emerald"] {
+  --bg: #0c1810;
+  --panel: #14261b;
+  --panel2: #1d3627;
+  --panel3: #2a4d38;
+  --text: #e8f5ed;
+  --muted: #95c4a5;
+  --accent: #2ecc71;
+  --accent-dark: #0d542a;
+  --line: rgba(46, 204, 113, 0.15);
+  --gold: #f39c12;
+  --danger: #e74c3c;
+}
+
 /* --- Reset --- */
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); font-family: Inter, Arial, sans-serif; }
@@ -619,3 +664,36 @@ h1, h2, h3, p { margin: 0; }
   .series { display: none; }
   .powered { right: 20px; }
 }
+
+/* --- Best of N Dots & Theme Preset Selector --- */
+.dot-score {
+  display: inline-flex; gap: 3px; align-items: center; margin-left: 6px;
+}
+.dot-score span {
+  width: 6px; height: 6px; border-radius: 50%; display: inline-block;
+  background: var(--muted); opacity: 0.3; transition: all 0.15s;
+}
+.dot-score span.won {
+  background: var(--accent); opacity: 1; box-shadow: 0 0 5px var(--accent);
+}
+
+.theme-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 12px;
+}
+.theme-card {
+  padding: 16px; border-radius: 8px; border: 1px solid var(--line);
+  background: rgba(6, 14, 32, 0.4); cursor: pointer; transition: all 0.15s;
+  display: flex; flex-direction: column; gap: 12px; text-align: left;
+}
+.theme-card:hover { border-color: rgba(225, 240, 255, 0.3); }
+.theme-card.active {
+  border-color: var(--accent); box-shadow: 0 0 12px rgba(165, 216, 255, 0.25);
+  background: rgba(45, 52, 73, 0.4);
+}
+.theme-preview-bar {
+  height: 24px; border-radius: 4px; display: flex; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@media (max-width: 900px) {
+  .theme-grid { grid-template-columns: 1fr 1fr; }
+}
+

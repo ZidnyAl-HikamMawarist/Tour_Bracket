@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTournament } from '../../context/TournamentContext';
 import type { Match, Team } from '../../types/tournament';
@@ -5,12 +6,30 @@ import type { Match, Team } from '../../types/tournament';
 export default function LiveViewer() {
   const { state } = useTournament();
 
+  const theme = state.settings.theme || 'apex_navy';
+  const defaultBestOf = state.settings.defaultBestOf || 3;
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
   const round0Matches = state.matches.filter((m) => m.roundIndex === 0);
   const round1Matches = state.matches.filter((m) => m.roundIndex === 1);
   const grandFinal = state.matches.find((m) => m.nextMatchId === null);
 
+  const renderBestOfDots = (score: number | null, bestOf: number = 3) => {
+    const winsNeeded = Math.ceil(bestOf / 2);
+    const currentScore = score ?? 0;
+    const dots = [];
+    for (let i = 0; i < winsNeeded; i++) {
+      dots.push(<span key={i} className={i < currentScore ? 'won' : ''} />);
+    }
+    return <span className="dot-score">{dots}</span>;
+  };
+
   const renderMatchCard = (match: Match) => {
     const hasWinner = !!match.winnerId;
+    const currentBestOf = match.bestOf || defaultBestOf;
 
     const renderRow = (team: Team | null, score: number | null, isFirst: boolean) => {
       const isWinner = match.winnerId && team && match.winnerId === team.id;
@@ -27,6 +46,7 @@ export default function LiveViewer() {
             <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {team ? team.name : 'TBD'}
             </span>
+            {team && renderBestOfDots(score, currentBestOf)}
           </div>
           <b style={{ fontFamily: 'Montserrat', fontWeight: 600, minWidth: 16, textAlign: 'right' }}>
             {score !== null && score !== undefined ? score : '-'}
@@ -63,7 +83,7 @@ export default function LiveViewer() {
         <div className="live-pill">● LIVE</div>
 
         <div className="series">
-          <small>{state.settings.seriesSubtitle}</small>
+          <small>{state.settings.seriesSubtitle} • BEST OF {defaultBestOf}</small>
           <h1>{state.settings.tournamentName}</h1>
           <hr />
         </div>
@@ -93,7 +113,10 @@ export default function LiveViewer() {
         {/* Column 3: Grand Final */}
         {grandFinal && (
           <div className="grand-view">
-            <div className="grand-label">♕<br />GRAND FINAL</div>
+            <div className="grand-label">
+              ♕<br />
+              GRAND FINAL (Bo{grandFinal.bestOf || defaultBestOf})
+            </div>
 
             {state.champion ? (
               <motion.div layout className="champion">
@@ -104,7 +127,12 @@ export default function LiveViewer() {
                       Champion
                     </small>
                     <div className="champion-name">{state.champion.name}</div>
-                    <small style={{ color: 'var(--gold)', letterSpacing: 4, fontSize: 10, marginTop: 8, display: 'block' }}>● ● ●</small>
+                    <div style={{ marginTop: 8 }}>
+                      {renderBestOfDots(
+                        grandFinal.winnerId === grandFinal.team1?.id ? grandFinal.score1 : grandFinal.score2,
+                        grandFinal.bestOf || defaultBestOf
+                      )}
+                    </div>
                   </div>
                   <div className="champion-score">
                     {grandFinal.winnerId === grandFinal.team1?.id ? grandFinal.score1 ?? 4 : grandFinal.score2 ?? 4}
@@ -132,11 +160,17 @@ export default function LiveViewer() {
             ) : (
               <motion.div layout className="viewer-match" style={{ width: '100%' }}>
                 <div className="row">
-                  <span>{grandFinal.team1 ? grandFinal.team1.name : 'Awaiting Finalist'}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span>{grandFinal.team1 ? grandFinal.team1.name : 'Awaiting Finalist'}</span>
+                    {grandFinal.team1 && renderBestOfDots(grandFinal.score1, grandFinal.bestOf || defaultBestOf)}
+                  </div>
                   <b style={{ fontFamily: 'Montserrat' }}>{grandFinal.score1 ?? '-'}</b>
                 </div>
                 <div className="row">
-                  <span>{grandFinal.team2 ? grandFinal.team2.name : 'Awaiting Finalist'}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span>{grandFinal.team2 ? grandFinal.team2.name : 'Awaiting Finalist'}</span>
+                    {grandFinal.team2 && renderBestOfDots(grandFinal.score2, grandFinal.bestOf || defaultBestOf)}
+                  </div>
                   <b style={{ fontFamily: 'Montserrat' }}>{grandFinal.score2 ?? '-'}</b>
                 </div>
                 {grandFinal.status === 'live' && (

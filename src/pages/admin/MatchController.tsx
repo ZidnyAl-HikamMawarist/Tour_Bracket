@@ -47,14 +47,27 @@ export default function MatchController() {
     setMatchStatus(match.id, nextStatus);
   };
 
+  const renderBestOfDots = (score: number | null, bestOf: number = 3) => {
+    const winsNeeded = Math.ceil(bestOf / 2);
+    const currentScore = score ?? 0;
+    const dots = [];
+    for (let i = 0; i < winsNeeded; i++) {
+      dots.push(<span key={i} className={i < currentScore ? 'won' : ''} />);
+    }
+    return <span className="dot-score" title={`Best of ${bestOf} (Target ${winsNeeded} Wins)`}>{dots}</span>;
+  };
+
   // Group matches by round
   const round0Matches = state.matches.filter((m) => m.roundIndex === 0);
   const round1Matches = state.matches.filter((m) => m.roundIndex === 1);
   const grandFinal = state.matches.find((m) => m.nextMatchId === null);
 
+  const defaultBestOf = state.settings.defaultBestOf || 3;
+
   const renderTeamRow = (match: Match, team: Team | null, score: number | null, isTeam1: boolean) => {
     const isWinner = match.winnerId && team && match.winnerId === team.id;
     const isLoser = match.winnerId && team && match.winnerId !== team.id;
+    const currentBestOf = match.bestOf || defaultBestOf;
 
     if (!team) {
       return (
@@ -83,6 +96,7 @@ export default function MatchController() {
             {team.logo ? <img src={team.logo} alt={team.name} /> : team.shortName}
           </span>
           <span className="team-name">{team.name}</span>
+          {renderBestOfDots(score, currentBestOf)}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div className="score-controls">
@@ -99,12 +113,15 @@ export default function MatchController() {
     if (!match) return null;
     return (
       <div className={`match ${posClass}`}>
-        <span
-          className={`live-badge ${match.status !== 'live' ? 'inactive' : ''}`}
-          onClick={(e) => toggleLiveStatus(match, e)}
-        >
-          {match.status === 'live' ? 'LIVE' : 'SET LIVE'}
-        </span>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: -12, marginBottom: 4 }}>
+          <span
+            className={`live-badge ${match.status !== 'live' ? 'inactive' : ''}`}
+            onClick={(e) => toggleLiveStatus(match, e)}
+            style={{ position: 'static', transform: 'none' }}
+          >
+            {match.status === 'live' ? 'LIVE' : 'SET LIVE'}
+          </span>
+        </div>
         {renderTeamRow(match, match.team1, match.score1, true)}
         {renderTeamRow(match, match.team2, match.score2, false)}
       </div>
@@ -125,7 +142,12 @@ export default function MatchController() {
             </div>
             <div>
               <h1 className="page-title">Match Controller</h1>
-              <p className="eyebrow">Quarter-Finals Live</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
+                <p className="eyebrow" style={{ marginTop: 0 }}>Quarter-Finals Live</p>
+                <span style={{ fontSize: 11, background: 'var(--panel3)', padding: '2px 8px', borderRadius: 4, color: 'var(--accent)', fontWeight: 600 }}>
+                  Series: Bo{defaultBestOf}
+                </span>
+              </div>
             </div>
           </div>
           <div className="actions">
@@ -151,9 +173,15 @@ export default function MatchController() {
           <div className="col semi">
             {round1Matches.map((m) => (
               <div key={m.id} className="match relative">
-                {m.status === 'live' && (
-                  <span className="live-badge" onClick={(e) => toggleLiveStatus(m, e)}>LIVE</span>
-                )}
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
+                  <span
+                    className={`live-badge ${m.status !== 'live' ? 'inactive' : ''}`}
+                    onClick={(e) => toggleLiveStatus(m, e)}
+                    style={{ position: 'static', transform: 'none' }}
+                  >
+                    {m.status === 'live' ? 'LIVE' : 'SET LIVE'}
+                  </span>
+                </div>
                 {renderTeamRow(m, m.team1, m.score1, true)}
                 {renderTeamRow(m, m.team2, m.score2, false)}
               </div>
@@ -164,7 +192,7 @@ export default function MatchController() {
           {grandFinal && (
             <div className="col grand">
               <div style={{ width: '100%' }}>
-                <div className="grand-title">GRAND FINAL</div>
+                <div className="grand-title">GRAND FINAL (Bo{grandFinal.bestOf || defaultBestOf})</div>
 
                 <div className="match relative" style={{ position: 'relative', alignItems: 'center' }}>
                   <span
