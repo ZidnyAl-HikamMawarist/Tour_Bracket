@@ -32,6 +32,7 @@ function App() {
         {/* Public Live Broadcast Viewer Routes */}
         <Route path="/viewer" element={<ViewerLayout />}>
           <Route index element={<LiveViewer />} />
+          <Route path=":slug" element={<LiveViewer />} />
         </Route>
       </Routes>
     </TournamentProvider>

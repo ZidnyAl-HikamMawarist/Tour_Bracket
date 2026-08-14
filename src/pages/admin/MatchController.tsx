@@ -128,6 +128,12 @@ export default function MatchController() {
     );
   };
 
+  const copyViewerLink = () => {
+    const viewerUrl = `${window.location.origin}/viewer`;
+    navigator.clipboard.writeText(viewerUrl);
+    showToast('Link Live Viewer disalin ke clipboard!');
+  };
+
   return (
     <div className="match-content">
       <div className="content">
@@ -155,6 +161,7 @@ export default function MatchController() {
             {state.history.length > 0 && (
               <button className="btn" onClick={undoLastAction}>Undo ({state.history.length})</button>
             )}
+            <button className="btn" onClick={copyViewerLink}>📋 Copy Viewer Link</button>
             <a href="/viewer" target="_blank" rel="noreferrer" className="btn primary">Publish Results ↗</a>
           </div>
         </div>
